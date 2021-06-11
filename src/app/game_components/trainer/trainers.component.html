@@ -1,0 +1,28 @@
+<div class="card border-primary mb-3">
+    <div class="card-header">Header</div>
+    <div class="card-body text-primary">
+      <h5 class="card-title text-center">Gamers registrados</h5>
+    
+      <table class="table table-bordered table-striped">
+          <thead>
+              <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Apellido</th>
+                  <th>Creación cuenta</th>
+                  <th>Nickname</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let trainer of trainers">
+                <td>{{ trainer.id }}</td>
+                <td>{{ trainer.relatedUser.name }}</td>
+                <td>{{ trainer.relatedUser.lastName }}</td>
+                <td>{{ trainer.relatedUser.accountCreationDate }}</td>
+                <td>{{ trainer.nickname }}</td>
+              </tr>
+          </tbody>
+      </table>
+
+    </div>
+  </div>
