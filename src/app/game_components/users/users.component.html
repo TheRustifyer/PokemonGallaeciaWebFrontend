@@ -1,1 +1,51 @@
-<p>users works!</p>
+<div class="card border-primary mb-1">
+    <div class="card-header">Header</div>
+    <div class="card-body text-primary">
+      <h5 class="card-title text-center">Usuarios</h5>
+
+      <div class="my-2 text-left">
+          <button class="btn btn-rounded btn-primary" type="button" [routerLink] = "['/users/form']">Crear usuario</button>
+      </div>
+
+      <div *ngIf = "users?.length == 0" class="alert alert-info">
+        No se han podido recuperar los datos del servidor.
+      </div>
+  
+      <table class="table table-bordered table-striped" *ngIf="users?.length > 0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Contraseña</th>
+            <th>Email</th>
+            <th>Nombre</th>
+            <th>Apelidos</th>
+            <th>Fecha creación</th>
+            <th>Nickname</th>
+            <th>Editar</th> 
+            <th>Eliminar</th> 
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.password }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.lastName }}</td>
+            <td>{{ user.accountCreationDate }}</td>
+            <td>{{ user.trainer.nickname }}</td>
+
+            <td>
+              <button type="button" name="editar" [routerLink] = "['/users/form', user.id]" class="btn btn-primary">Editar</button>
+            </td>
+            <td>
+              <button type="button" name="eliminar" (click)='delete(user)' class="btn btn-danger btn-primary">Eliminar</button>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
