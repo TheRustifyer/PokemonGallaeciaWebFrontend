@@ -14,6 +14,8 @@ export class UsersFormComponent implements OnInit {
   user: User = new User();
   relatedTrainer: Trainer = new Trainer();
 
+  errors: string[];
+
   constructor(
     private userService: UserService,
     private router: Router,
@@ -42,7 +44,12 @@ export class UsersFormComponent implements OnInit {
     this.userService.create(this.user).subscribe(
       user => { 
         this.router.navigate(['/users']);
-        Swal.fire('Felicidades!', `Usuario ${user.username} ha registrado con éxito!`, 'success')
+        Swal.fire('Felicidades!', `Usuario ${this.user.username} ha registrado con éxito!`, 'success')
+      },
+      err => {
+        this.errors = err.error.errors as string[];
+        console.error('Código de error: ' + err.status);
+        console.error(err.error.errors);
       }
     );
     console.log("USUARIO CREADO: " + this.user.trainer);
@@ -53,7 +60,12 @@ export class UsersFormComponent implements OnInit {
       user => {
         console.log("Usuario actualizado: " + this.user);
         this.router.navigate(['/users']);
-        Swal.fire('Usuario actualizado', `Usuario ${this.user.username} actualizado con éxito!`, 'success')
+        Swal.fire('Usuario actualizado', `Usuario ${user.username} actualizado con éxito!`, 'success')
+      },
+      err => {
+        this.errors = err.error.errors as string[];
+        console.error('Código de error desde el backend: ' + err.status);
+        console.error(err.error.errors);
       }
     )
   

@@ -3,9 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
+
+import localeES from '@angular/common/locales/es';
+import { registerLocaleData } from '@angular/common';
 
 // User Components
 import { HeaderComponent } from './design/header/header.component';
@@ -20,9 +23,13 @@ import { TrainerService } from './game_components/trainer/trainer.service';
 import { TrainersFormComponent } from './game_components/trainer/trainers.form.component';
 
 
+// Sets the global locale for the whole app
+registerLocaleData(localeES, 'es');
+
 const routes: Routes = [
   {path: '', redirectTo: '/users', pathMatch: 'full'},
   {path: 'users', component: UsersComponent},
+  {path: 'users/page/:page', component: UsersComponent},
   {path: 'users/form', component: UsersFormComponent},
   {path: 'users/form/:id', component: UsersFormComponent},
   {path: 'trainers', component: TrainersComponent},

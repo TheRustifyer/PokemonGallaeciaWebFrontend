@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { formatDate } from '@angular/common';
 import { User } from './user';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -19,15 +20,33 @@ export class UserService {
     private router: Router,
     ) { }
 
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.usersEndpoint);
+  getUsers(page: number): Observable<any> {
+    return this.http.get<User[]>(this.usersEndpoint + '/page/' + page).pipe(
+      map((response: any) => {
+        (response.content as User[]).map(user => {
+          user.accountCreationDate = formatDate(user.accountCreationDate, 'dd-MM-yyyy', 'en-US');
+          // Complete day -> 'EEEE dd-MMMM-yyyy'
+          return user;
+        });
+        return response;
+      })
+    );
   }
 
   getUser(id: number): Observable<User> {
     return this.http.get<User>(`${this.usersEndpoint}/${id}`).pipe(
       catchError(e => {
+
+        // Gonna check if there's some bad request backend's response
+        if (e.status == 400) {
+          return throwError(e);
+        }
+
+        // Redirects the client to the list of the users
         this.router.navigate(['/users']);
+        // Output the errors inthe console, to make it easy to debug what went wrong
         console.error(e.error.message);
+        // Shows the message through a sweetalert graphical modal
         Swal.fire('Ooops! Algo ha ido mal!', e.error.message, 'error');
         return throwError(e);
       })
@@ -38,7 +57,13 @@ export class UserService {
     return this.http.post<User>(this.usersEndpoint, user, {headers: this.httpHeaders}).pipe(
       map( (response:any ) => response.user as User),
       catchError(e => {
-        console.error(e.error.Mensaje);
+
+        // Gonna check if there's some bad request backend's response
+        if (e.status == 400) {
+          return throwError(e);
+        }
+
+        console.error(e.error.message);
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);
       })
@@ -48,7 +73,7 @@ export class UserService {
   update(user: User): Observable<User> {
     return this.http.put<User>(`${this.usersEndpoint}/${user.id}`, user, {headers: this.httpHeaders}).pipe(
       catchError(e => {
-        console.error(e.error.Mensaje);
+        console.error(e.error.message);
         Swal.fire(e.error.message, e.error.error, 'error');
         return throwError(e);
       })

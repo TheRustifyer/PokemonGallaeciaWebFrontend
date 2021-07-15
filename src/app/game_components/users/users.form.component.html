@@ -1,5 +1,10 @@
-<div class="card bg-dark text-white">
+<ul class ="alert alert-danger" *ngIf="errors?.length > 0">
+  <li *ngFor = "let err of errors">
+    {{ err }}
+  </li>
+</ul>
 
+<div class="card bg-dark text-white">
     <div class="card-header" *ngIf="!user.id else edit">Crear usuario</div>
     <ng-template #edit>
       <div class="card-header">Editar usuario</div>
@@ -11,7 +16,8 @@
         <div class="form-group row">
           <label for="username" class="col-form-label col-sm-2">Usuario</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" [(ngModel)]="user.username" name="username" required minlength="4" maxlength="12" #username="ngModel">
+            <input type="text" class="form-control" [(ngModel)]="user.username" name="username" #username="ngModel"> 
+            <!-- required minlength="4" maxlength="12"  -->
               <div class="alert alert-danger" *ngIf="username.invalid && (username.dirty || username.touched)">
                 <div *ngIf="username.errors.required">Debes de escoger un nombre de usuario</div>
                 <div *ngIf="username.errors.minlength">El nombre de usuario ha de tener mínimo 4 caracteres</div>
@@ -48,7 +54,8 @@
         <div class="form-group row">
           <label for="email" class="col-form-label col-sm-2">Email</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" [(ngModel)]="user.email" required name="email" #email="ngModel">
+            <input type="text" class="form-control" [(ngModel)]="user.email" name="email" #email="ngModel">
+            <!-- required -->
             <div class="alert alert-danger" *ngIf="email.invalid && (email.dirty || email.touched)">
               <div *ngIf="email.errors.required">El email es un campo obligatorio</div>
             </div>
@@ -66,7 +73,7 @@
         <div class="form-group row">
           <div class="col-sm-6">
             <br>
-            <button class="btn btn-primary" role="button" (click)='create()' *ngIf="!user.id else elseBlock" [disabled]=!userForm.form.valid>Crear</button>
+            <button class="btn btn-primary" role="button" (click)='create()' *ngIf="!this.user.id else elseBlock" [disabled]=!userForm.form.valid>Crear</button>
 
             <ng-template #elseBlock>
               <button class="btn btn-primary" role="button" (click)='update()' [disabled]=!userForm.form.valid>Editar</button>

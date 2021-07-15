@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { tap } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { User } from './user';
 import { UserService } from './user.service';
@@ -11,12 +13,29 @@ export class UsersComponent implements OnInit {
 
   users: User[] = [];
 
-  constructor(private userService: UserService) { }
+  constructor(
+    private userService: UserService,
+    private activatedRoute: ActivatedRoute
+    ) { }
 
   ngOnInit(): void {
-    this.userService.getUsers().subscribe(
-      users => this.users = users
-    );
+    
+    this.activatedRoute.paramMap.subscribe( params => {
+      let page: number = +params.get('page');
+
+      if (!page) {
+        page = 0;
+      }
+
+      this.userService.getUsers(page)
+      .pipe(
+        tap(response => {
+          (response.content as User[]).forEach(user => {
+            console.log(user.username)
+          })
+        })
+      ).subscribe(response => this.users = response.content as User[]);
+    })
   }
 
   delete(user: User): void {
