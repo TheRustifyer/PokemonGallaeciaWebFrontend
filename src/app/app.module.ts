@@ -13,6 +13,7 @@ import { registerLocaleData } from '@angular/common';
 // User Components
 import { HeaderComponent } from './design/header/header.component';
 import { FooterComponent } from './design/footer/footer.component';
+import { PaginatorComponent } from './design/paginator/paginator.component';
 
 import { UsersComponent } from './game_components/users/users.component';
 import { UsersFormComponent } from './game_components/users/users.form.component';
@@ -21,6 +22,7 @@ import { UserService } from './game_components/users/user.service';
 import { TrainersComponent } from './game_components/trainer/trainer.component';
 import { TrainerService } from './game_components/trainer/trainer.service';
 import { TrainersFormComponent } from './game_components/trainer/trainers.form.component';
+
 
 
 // Sets the global locale for the whole app
@@ -43,6 +45,7 @@ const routes: Routes = [
     
     HeaderComponent,
     FooterComponent,
+    PaginatorComponent,
     
     UsersComponent,
     TrainersComponent,

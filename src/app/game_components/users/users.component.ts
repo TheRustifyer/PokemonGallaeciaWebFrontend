@@ -12,6 +12,7 @@ import { UserService } from './user.service';
 export class UsersComponent implements OnInit {
 
   users: User[] = [];
+  paginator: any;
 
   constructor(
     private userService: UserService,
@@ -34,7 +35,10 @@ export class UsersComponent implements OnInit {
             console.log(user.username)
           })
         })
-      ).subscribe(response => this.users = response.content as User[]);
+      ).subscribe(response => {
+        this.users = response.content as User[];
+        this.paginator = response;
+      })
     })
   }
 

@@ -1,0 +1,24 @@
+<ul *ngIf = "pages?.length > 0" class="pagination">
+
+    <li class="page-item" *ngIf = "paginator.number > 0 ">
+        <a class="page-link" [routerLink] = "['/users/page', paginator.number - 1]">&laquo;</a>
+    </li>
+
+    <li ngClass = "paginator.first ? 'disabled page-item' : 'page-item">
+        <a class="page-link" [routerLink] = "['/users/page', 0]">Primera</a>
+    </li>
+
+    <li class="page-item" *ngFor = "let numberOfPages of pages" [ngClass] = "numberOfPages - 1 == paginator.number ? 'active' : '' ">
+        <span class="page-link" *ngIf = "numberOfPages - 1 == paginator.number"> {{ numberOfPages}}</span>
+        <a *ngIf = "numberOfPages - 1 != paginator.number" class="page-link" [routerLink] = "['/users/page', numberOfPages - 1]"> {{ numberOfPages }} </a>
+    </li>
+
+    <li ngClass = "paginator.last ? 'disabled page-item' : 'page-item">
+        <a class="page-link" [routerLink] = "['/users/page', paginator.totalPages - 1]">Última</a>
+    </li>
+
+    <li class="page-item" *ngIf = "paginator.number < paginator.totalPages - 1">
+        <a class="page-link" [routerLink] = "['/users/page', paginator.number + 1]">&raquo;</a>
+    </li>
+
+</ul>
